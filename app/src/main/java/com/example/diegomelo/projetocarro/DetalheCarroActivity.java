@@ -3,6 +3,8 @@ package com.example.diegomelo.projetocarro;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.diegomelo.projetocarro.model.Carro;
+
 public class DetalheCarroActivity extends AppCompatActivity {
 
     @Override

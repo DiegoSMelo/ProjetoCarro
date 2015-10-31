@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.diegomelo.projetocarro.model.Carro;
+
 /**
  * Created by Diego Melo on 17/10/2015.
  */

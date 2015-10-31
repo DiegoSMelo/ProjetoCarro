@@ -1,4 +1,4 @@
-package com.example.diegomelo.projetocarro;
+package com.example.diegomelo.projetocarro.model;
 
 import java.io.Serializable;
 
