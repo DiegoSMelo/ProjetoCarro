@@ -1,11 +1,15 @@
 package com.example.diegomelo.projetocarro;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.diegomelo.projetocarro.model.Carro;
 import com.google.gson.Gson;
@@ -23,12 +27,13 @@ import java.util.List;
 public class ListaCarroFragment extends ListFragment {
 
     List<Carro> listaCarros;
+    CarroTask carroTask;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        new CarroTask().execute();
+        carregarCarros();
     }
 
     @Override
@@ -44,6 +49,25 @@ public class ListaCarroFragment extends ListFragment {
 
     interface AoClicarNoCarro{
         void voceClicouNoCarro(Carro c);
+    }
+
+    private void carregarCarros(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()){
+            //if (carroTask == null && carroTask.getStatus() == AsyncTask.Status.FINISHED){
+
+                carroTask = new CarroTask();
+                carroTask.execute();
+
+          //  }
+        }else{
+
+            Toast.makeText(getActivity(), R.string.semConexao, Toast.LENGTH_LONG).show();
+
+        }
     }
 
     class CarroTask extends AsyncTask<Void, Void, Carro[]>{
