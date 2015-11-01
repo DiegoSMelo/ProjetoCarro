@@ -6,4 +6,5 @@
     <string name="title_activity_detalhe_carro">DetalheCarroActivity</string>
     <string name="acao_favorito">Favorito</string>
     <string name="semConexao">Não há conexão!</string>
+    <string name="msg_ao_baixar">Erro ao baixar as informações</string>
 </resources>

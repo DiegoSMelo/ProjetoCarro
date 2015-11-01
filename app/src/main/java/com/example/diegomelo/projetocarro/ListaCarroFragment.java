@@ -6,7 +6,10 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,17 +20,25 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Diego Melo on 17/10/2015.
  */
-public class ListaCarroFragment extends ListFragment {
+public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     List<Carro> listaCarros;
     CarroTask carroTask;
+    SwipeRefreshLayout swipe;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_lista_carro, null);
+        swipe = (SwipeRefreshLayout)view.findViewById(R.id.swipe);
+        swipe.setOnRefreshListener(this);
+        return view;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -35,6 +46,8 @@ public class ListaCarroFragment extends ListFragment {
 
         carregarCarros();
     }
+
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -45,6 +58,11 @@ public class ListaCarroFragment extends ListFragment {
         if (getActivity() instanceof AoClicarNoCarro){
             ((AoClicarNoCarro)getActivity()).voceClicouNoCarro(carro);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        carregarCarros();
     }
 
     interface AoClicarNoCarro{
@@ -64,7 +82,7 @@ public class ListaCarroFragment extends ListFragment {
 
           //  }
         }else{
-
+            swipe.setRefreshing(false);
             Toast.makeText(getActivity(), R.string.semConexao, Toast.LENGTH_LONG).show();
 
         }
@@ -91,7 +109,7 @@ public class ListaCarroFragment extends ListFragment {
                 Gson gson = new Gson();
                 Carro[] carros = gson.fromJson(s,Carro[].class);
                 return carros;
-            } catch (IOException e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
 
@@ -116,7 +134,10 @@ public class ListaCarroFragment extends ListFragment {
                 );
 
                 setListAdapter(carroAdapter);
+            }else{
+                Toast.makeText(getActivity(), R.string.msg_ao_baixar, Toast.LENGTH_LONG).show();
             }
+            swipe.setRefreshing(false);
         }
     }
 }
