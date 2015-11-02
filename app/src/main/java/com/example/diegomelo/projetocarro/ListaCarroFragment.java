@@ -127,13 +127,13 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
                     listaCarros.add(carro);
                 }
 
-                ArrayAdapter<Carro> carroAdapter = new ArrayAdapter<Carro>(
+                ArrayAdapter<Carro> ArraycarroAdapter = new ArrayAdapter<Carro>(
                         getActivity(),
                         android.R.layout.simple_list_item_1,
                         listaCarros
                 );
 
-                setListAdapter(carroAdapter);
+                setListAdapter(ArraycarroAdapter);
             }else{
                 Toast.makeText(getActivity(), R.string.msg_ao_baixar, Toast.LENGTH_LONG).show();
             }
