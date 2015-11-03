@@ -10,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +29,7 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
 
     List<Carro> listaCarros;
     CarroTask carroTask;
+    CarroAdapter carroAdapter;
     SwipeRefreshLayout swipe;
 
     @Override
@@ -43,7 +43,9 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        listaCarros = new ArrayList<>();
+        carroAdapter = new CarroAdapter(getActivity(), listaCarros);
+        setListAdapter(carroAdapter);
         carregarCarros();
     }
 
@@ -96,7 +98,7 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-                    .url("https://dl.dropboxusercontent.com/u/71103581/listaCarros.json")
+                  .url("https://dl.dropboxusercontent.com/u/71103581/listaCarros.json")
                     //.url("http://192.166.99.106/carrosJson/listarCarros.php")
                     .build();
 
@@ -121,19 +123,14 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
             super.onPostExecute(carros);
 
             if (carros != null){
-                listaCarros = new ArrayList<Carro>();
+                listaCarros.clear();
 
                 for (Carro carro: carros) {
                     listaCarros.add(carro);
                 }
 
-                ArrayAdapter<Carro> ArraycarroAdapter = new ArrayAdapter<Carro>(
-                        getActivity(),
-                        android.R.layout.simple_list_item_1,
-                        listaCarros
-                );
+                carroAdapter.notifyDataSetChanged();
 
-                setListAdapter(ArraycarroAdapter);
             }else{
                 Toast.makeText(getActivity(), R.string.msg_ao_baixar, Toast.LENGTH_LONG).show();
             }

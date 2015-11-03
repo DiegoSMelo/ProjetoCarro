@@ -19,4 +19,5 @@
         android:id="@+id/txtModelo"
         android:layout_gravity="top"
         android:layout_margin="8dp" />
+
 </LinearLayout>
