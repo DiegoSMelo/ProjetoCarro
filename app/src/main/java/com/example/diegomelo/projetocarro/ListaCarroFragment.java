@@ -33,6 +33,13 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
     SwipeRefreshLayout swipe;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        listaCarros = new ArrayList<>();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lista_carro, null);
         swipe = (SwipeRefreshLayout)view.findViewById(R.id.swipe);
@@ -43,10 +50,13 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        listaCarros = new ArrayList<>();
-        carroAdapter = new CarroAdapter(getActivity(), listaCarros);
-        setListAdapter(carroAdapter);
-        carregarCarros();
+
+        if (listaCarros.isEmpty()) {
+            carroAdapter = new CarroAdapter(getActivity(), listaCarros);
+            setListAdapter(carroAdapter);
+
+            carregarCarros();
+        }
     }
 
 
@@ -77,12 +87,16 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()){
-            //if (carroTask == null && carroTask.getStatus() == AsyncTask.Status.FINISHED){
+
+            swipe.setRefreshing(true);
+
+            if (carroTask == null) {
 
                 carroTask = new CarroTask();
                 carroTask.execute();
 
-          //  }
+            }
+
         }else{
             swipe.setRefreshing(false);
             Toast.makeText(getActivity(), R.string.semConexao, Toast.LENGTH_LONG).show();
@@ -105,6 +119,8 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
             Response response = null;
 
             try {
+                Thread.sleep(5000);
+
                 response = client.newCall(request).execute();
                 String s =  response.body().string();
 
