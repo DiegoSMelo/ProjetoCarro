@@ -31,6 +31,7 @@ public class CarroActivity extends AppCompatActivity implements ListaCarroFragme
           Add uma ViewPager para transmitir eventos para o TabLayout.
         */
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(viewPager);
     }
 

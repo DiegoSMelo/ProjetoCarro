@@ -8,12 +8,13 @@
     tools:context=".CarroActivity">
 
 
-    <fragment
+
+    <include
+        layout="@layout/layout_abas"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:name="com.example.diegomelo.projetocarro.ListaCarroFragment"
-        android:id="@+id/fragment" />
+        />
 
     <FrameLayout
         android:id="@+id/detalhe"
