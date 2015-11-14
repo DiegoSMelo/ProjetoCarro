@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">ProjetoCarro</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_detalhe_carro">DetalheCarroActivity</string>
     <string name="acao_favorito">Favorito</string>
+    <string name="semConexao">Não há conexão!</string>
+    <string name="msg_ao_baixar">Erro ao baixar as informações</string>
+    <string name="title_listaDeCarros">Lista de carros</string>
+    <string name="title_meusFavoritos">Meus favoritos</string>
 </resources>

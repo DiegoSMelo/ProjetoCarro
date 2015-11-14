@@ -55,10 +55,6 @@ public class CarroActivity extends AppCompatActivity implements ListaCarroFragme
             Caso seja tablet, não haverá mudança de activity para implementar a fragment.
              */
 
-            /*
-            ?
-
-             */
             DetalheCarroFragment detalheCarroFragment = DetalheCarroFragment.novaInstancia(c);
             /*
             Substitui o que está sendo exibido no layout com id detalhe pelo fragment que está sendo passado.
