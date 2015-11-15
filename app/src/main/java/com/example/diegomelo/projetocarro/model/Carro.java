@@ -11,7 +11,13 @@ public class Carro implements Serializable{
     public String motor;
     public String imagem;
 
-
+    public Carro(String modelo, String fabricante, String ano, String motor, String imagem) {
+        this.modelo = modelo;
+        this.fabricante = fabricante;
+        this.ano = ano;
+        this.motor = motor;
+        this.imagem = imagem;
+    }
 
     @Override
     public String toString() {

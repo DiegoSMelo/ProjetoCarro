@@ -11,14 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.diegomelo.projetocarro.data.CarroDAO;
 import com.example.diegomelo.projetocarro.model.Carro;
 
 /**
  * Created by Diego Melo on 17/10/2015.
  */
 public class DetalheCarroFragment extends Fragment {
+
+    Carro carro;
 
     public static DetalheCarroFragment novaInstancia(Carro c){
         Bundle bundle = new Bundle();
@@ -40,7 +42,7 @@ public class DetalheCarroFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Carro carro = (Carro) getArguments().getSerializable("carro");
+        carro = (Carro) getArguments().getSerializable("carro");
 
         View layout = inflater.inflate(R.layout.fragment_detalhe_carro, null);
 
@@ -65,8 +67,13 @@ public class DetalheCarroFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.carro_favorito){
-            Toast.makeText(getActivity(), "Clicou em favorito!",
-                    Toast.LENGTH_SHORT).show();
+            CarroDAO carroDAO = new CarroDAO(getActivity());
+
+            if (carroDAO.isFavorito(carro)){
+                carroDAO.excluir(carro);
+            }else{
+                carroDAO.inserir(carro);
+            }
         }
 
         return super.onOptionsItemSelected(item);

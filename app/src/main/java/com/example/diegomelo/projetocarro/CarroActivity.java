@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.diegomelo.projetocarro.model.Carro;
 
-public class CarroActivity extends AppCompatActivity implements ListaCarroFragment.AoClicarNoCarro{
+public class CarroActivity extends AppCompatActivity implements AoClicarNoCarro{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class CarroActivity extends AppCompatActivity implements ListaCarroFragme
         }
 
         /*
-        Retorna o Fragment específico para a posição passada como parâmetro.
+        Retorna o Fregment específico para a posição passada como parâmetro.
          */
         @Override
         public Fragment getItem(int position) {

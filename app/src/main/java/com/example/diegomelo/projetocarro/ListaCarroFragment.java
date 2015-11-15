@@ -67,6 +67,11 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
 
         Carro carro = listaCarros.get(position);
 
+        exibirItem(carro);
+
+    }
+
+    private void exibirItem(Carro carro){
         if (getActivity() instanceof AoClicarNoCarro){
             ((AoClicarNoCarro)getActivity()).voceClicouNoCarro(carro);
         }
@@ -74,14 +79,15 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
+
         carregarCarros();
+
     }
 
-    interface AoClicarNoCarro{
-        void voceClicouNoCarro(Carro c);
-    }
+
 
     private void carregarCarros(){
+
         ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -90,12 +96,8 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
 
             swipe.setRefreshing(true);
 
-            if (carroTask == null) {
-
-                carroTask = new CarroTask();
-                carroTask.execute();
-
-            }
+            carroTask = new CarroTask();
+            carroTask.execute();
 
         }else{
             swipe.setRefreshing(false);
@@ -112,13 +114,14 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-                  .url("https://dl.dropboxusercontent.com/u/71103581/listaCarros.json")
-                    //.url("http://192.166.99.106/carrosJson/listarCarros.php")
+                 .url("https://dl.dropboxusercontent.com/u/71103581/listaCarros.json")
+                 //   .url("http://192.166.99.106/carrosJson/listarCarros.php")
                     .build();
 
             Response response = null;
 
             try {
+
                 Thread.sleep(5000);
 
                 response = client.newCall(request).execute();
@@ -127,6 +130,7 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
                 Gson gson = new Gson();
                 Carro[] carros = gson.fromJson(s,Carro[].class);
                 return carros;
+
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -146,6 +150,10 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
                 }
 
                 carroAdapter.notifyDataSetChanged();
+
+                if (getResources().getBoolean(R.bool.tablet)) {
+                    exibirItem(listaCarros.get(0));
+                }
 
             }else{
                 Toast.makeText(getActivity(), R.string.msg_ao_baixar, Toast.LENGTH_LONG).show();
