@@ -84,7 +84,7 @@ public class CarroActivity extends AppCompatActivity implements AoClicarNoCarro{
             if (position == 0){
                 return new ListaCarroFragment();
             }else{
-                return new Fragment();
+                return new ListaFavoritosCarroFragment();
             }
         }
 
