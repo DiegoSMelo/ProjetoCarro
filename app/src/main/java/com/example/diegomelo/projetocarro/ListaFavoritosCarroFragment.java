@@ -7,6 +7,8 @@ import android.widget.ListView;
 
 import com.example.diegomelo.projetocarro.data.CarroDAO;
 import com.example.diegomelo.projetocarro.model.Carro;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,9 @@ public class ListaFavoritosCarroFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         listaCarros = new ArrayList<>();
+
+        Bus bus = ((CarroApp)getActivity().getApplication()).getBus();
+        bus.register(this);
     }
 
 
@@ -38,11 +43,18 @@ public class ListaFavoritosCarroFragment extends ListFragment {
             carregarCarros();
         }
     }
-
+/*
     @Override
     public void onResume() {
         super.onResume();
         carregarCarros();
+    }
+*/
+    private void carregarCarros(){
+        CarroDAO carroDAO = new CarroDAO(getActivity());
+        listaCarros.clear();
+        listaCarros.addAll(carroDAO.listar());
+        carroAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -56,11 +68,9 @@ public class ListaFavoritosCarroFragment extends ListFragment {
         }
     }
 
-    private void carregarCarros(){
-        CarroDAO carroDAO = new CarroDAO(getActivity());
-        listaCarros.clear();
-        listaCarros.addAll(carroDAO.listar());
-        carroAdapter.notifyDataSetChanged();
+    @Subscribe
+    public void listaDeFavoritosAtualizada(Carro carro){
+        carregarCarros();
     }
 
 }

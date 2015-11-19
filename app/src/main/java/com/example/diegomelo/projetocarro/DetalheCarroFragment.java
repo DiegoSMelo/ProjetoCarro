@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.diegomelo.projetocarro.data.CarroDAO;
 import com.example.diegomelo.projetocarro.model.Carro;
+import com.squareup.otto.Bus;
 
 /**
  * Created by Diego Melo on 17/10/2015.
@@ -21,6 +22,8 @@ import com.example.diegomelo.projetocarro.model.Carro;
 public class DetalheCarroFragment extends Fragment {
 
     Carro carro;
+    MenuItem menuItemFavorito;
+    CarroDAO mDao;
 
     public static DetalheCarroFragment novaInstancia(Carro c){
         Bundle bundle = new Bundle();
@@ -36,6 +39,13 @@ public class DetalheCarroFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mDao = new CarroDAO(getActivity());
     }
 
     @Nullable
@@ -61,19 +71,35 @@ public class DetalheCarroFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_detalhe_carro, menu);
+
+        menuItemFavorito = menu.findItem(R.id.carro_favorito);
+        atualizarItemMenu(mDao.isFavorito(carro));
+    }
+
+    private void atualizarItemMenu(boolean favorito){
+        menuItemFavorito.setIcon(favorito ?
+                        android.R.drawable.ic_menu_delete :
+                        android.R.drawable.ic_menu_save
+        );
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.carro_favorito){
-            CarroDAO carroDAO = new CarroDAO(getActivity());
 
-            if (carroDAO.isFavorito(carro)){
-                carroDAO.excluir(carro);
+
+            boolean favorito = mDao.isFavorito(carro);
+
+            if (favorito){
+                mDao.excluir(carro);
             }else{
-                carroDAO.inserir(carro);
+                mDao.inserir(carro);
             }
+
+            atualizarItemMenu(!favorito);
+            Bus bus = ((CarroApp)getActivity().getApplication()).getBus();
+            bus.post(carro);
         }
 
         return super.onOptionsItemSelected(item);
