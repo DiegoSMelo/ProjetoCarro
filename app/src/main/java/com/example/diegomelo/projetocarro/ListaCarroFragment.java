@@ -59,7 +59,24 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
         }
     }
 
+    private void carregarCarros(){
 
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()){
+
+            swipe.setRefreshing(true);
+
+            carroTask = new CarroTask();
+            carroTask.execute();
+
+        }else{
+            swipe.setRefreshing(false);
+            Toast.makeText(getActivity(), R.string.semConexao, Toast.LENGTH_LONG).show();
+
+        }
+    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -86,25 +103,7 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
 
 
 
-    private void carregarCarros(){
 
-        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnected()){
-
-            swipe.setRefreshing(true);
-
-            carroTask = new CarroTask();
-            carroTask.execute();
-
-        }else{
-            swipe.setRefreshing(false);
-            Toast.makeText(getActivity(), R.string.semConexao, Toast.LENGTH_LONG).show();
-
-        }
-    }
 
     class CarroTask extends AsyncTask<Void, Void, Carro[]>{
 
@@ -114,7 +113,8 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-                 .url("https://dl.dropboxusercontent.com/u/71103581/listaCarros.json")
+                    .url("https://dl.dropboxusercontent.com/u/71103581/listaCarros%20(1).json")
+                // .url("https://dl.dropboxusercontent.com/u/71103581/listaCarros.json")
                  //   .url("http://192.166.99.106/carrosJson/listarCarros.php")
                     .build();
 

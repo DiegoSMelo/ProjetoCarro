@@ -31,7 +31,6 @@ public class CarroActivity extends AppCompatActivity implements AoClicarNoCarro{
           Add uma ViewPager para transmitir eventos para o TabLayout.
         */
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
-       // tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
     }

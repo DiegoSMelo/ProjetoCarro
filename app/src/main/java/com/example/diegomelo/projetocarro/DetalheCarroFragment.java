@@ -10,11 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.diegomelo.projetocarro.data.CarroDAO;
 import com.example.diegomelo.projetocarro.model.Carro;
 import com.squareup.otto.Bus;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Diego Melo on 17/10/2015.
@@ -56,10 +58,12 @@ public class DetalheCarroFragment extends Fragment {
 
         View layout = inflater.inflate(R.layout.fragment_detalhe_carro, null);
 
+        ImageView imagemDetalhe = (ImageView) layout.findViewById(R.id.imgCarroDetalhe);
         TextView txtModelo = (TextView) layout.findViewById(R.id.txtModelo);
         TextView txtFabricante = (TextView) layout.findViewById(R.id.txtFabricante);
         TextView txtAnoMotor = (TextView) layout.findViewById(R.id.txtAnoMotor);
 
+        Picasso.with(container.getContext()).load(carro.imagem).into(imagemDetalhe);
         txtModelo.setText(carro.modelo);
         txtFabricante.setText(carro.fabricante);
         txtAnoMotor.setText(carro.motor + " - " + carro.ano);
