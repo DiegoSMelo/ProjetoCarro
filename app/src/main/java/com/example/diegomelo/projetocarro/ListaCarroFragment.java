@@ -125,10 +125,11 @@ public class ListaCarroFragment extends ListFragment implements SwipeRefreshLayo
                 Thread.sleep(5000);
 
                 response = client.newCall(request).execute();
-                String s =  response.body().string();
+                String stringJson =  response.body().string();
 
                 Gson gson = new Gson();
-                Carro[] carros = gson.fromJson(s,Carro[].class);
+                Carro[] carros = gson.fromJson(stringJson,Carro[].class);
+
                 return carros;
 
             } catch (Throwable e) {

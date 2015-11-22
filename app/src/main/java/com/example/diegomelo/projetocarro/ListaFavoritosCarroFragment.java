@@ -43,13 +43,7 @@ public class ListaFavoritosCarroFragment extends ListFragment {
             carregarCarros();
         }
     }
-/*
-    @Override
-    public void onResume() {
-        super.onResume();
-        carregarCarros();
-    }
-*/
+
     private void carregarCarros(){
         CarroDAO carroDAO = new CarroDAO(getActivity());
         listaCarros.clear();
